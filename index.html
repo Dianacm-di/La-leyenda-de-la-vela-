@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antaña Digital — Mención Desarrollo de Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night-deep:#12172c;
+    --night-mid:#1d2444;
+    --night-panel:#242b52;
+    --gold:#e8a33d;
+    --gold-soft:#f4c874;
+    --terracota:#b3532f;
+    --stone:#ede3cf;
+    --stone-dim:#d9cdb0;
+    --turquoise:#3e8e7e;
+    --ink:#1c1a14;
+    --text-light:#ede3cf;
+    --text-muted:#a9aed0;
+    --line:rgba(232,163,61,0.22);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--night-deep);
+    color:var(--text-light);
+    font-family:'Work Sans',sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    gap:0.6em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--gold);
+    display:inline-block;
+  }
+  a{color:var(--gold-soft);}
+  img{max-width:100%;display:block;}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  section{padding:96px 0;position:relative;}
+  @media (max-width:700px){ section{padding:64px 0;} }
+
+  /* ---------- Star field ---------- */
+  .stars{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:transparent;
+  }
+  .star{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background:var(--stone); opacity:0.5;
+    animation:twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{opacity:0.15;}
+    50%{opacity:0.85;}
+  }
+
+  /* ---------- Candle progress nav ---------- */
+  .candle-nav{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%);
+    z-index:50; display:flex; flex-direction:column; gap:16px;
+  }
+  .candle-nav button{
+    background:none;border:none;cursor:pointer;padding:4px;
+    display:flex;flex-direction:column;align-items:center;
+    opacity:0.45; transition:opacity .3s ease;
+  }
+  .candle-nav button.active,.candle-nav button:hover{opacity:1;}
+  .candle-nav svg{width:14px;height:20px;display:block;}
+  .flame{transition:fill .3s ease;}
+  .candle-nav button .flame{fill:#4a4a35;}
+  .candle-nav button.active .flame{fill:var(--gold); filter:drop-shadow(0 0 4px var(--gold));}
+  @media (max-width:900px){ .candle-nav{display:none;} }
+
+  /* ================= HERO ================= */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    position:relative;
+    padding-top:120px;
+    overflow:hidden;
+  }
+  .hero-mountain{
+    position:absolute; bottom:0; left:0; width:100%; z-index:1;
+    opacity:0.95;
+  }
+  .hero-inner{
+    position:relative; z-index:2;
+    padding-bottom:110px;
+  }
+  .hero .eyebrow{margin-bottom:22px; color:var(--gold-soft);}
+  .hero h1{
+    font-size:clamp(2.6rem,7vw,5.2rem);
+    line-height:0.98;
+    color:var(--stone);
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:500; color:var(--gold);
+  }
+  .hero-sub{
+    max-width:540px; margin-top:24px;
+    font-size:1.08rem; color:var(--text-muted);
+  }
+  .hero-meta{
+    margin-top:40px; display:flex; gap:36px; flex-wrap:wrap;
+    font-family:'Space Mono',monospace; font-size:0.78rem;
+    color:var(--stone-dim); text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .hero-meta span{display:block; color:var(--gold); font-family:'Work Sans',sans-serif; text-transform:none; letter-spacing:0; font-size:0.95rem; margin-top:4px;}
+
+  /* ================= VIDEO ================= */
+  .video-section{background:var(--night-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .video-frame{
+    position:relative; width:100%; padding:22px;
+    border-radius:6px; overflow:hidden;
+    background: linear-gradient(135deg, rgba(29,36,68,0.9), rgba(18,23,44,0.95));
+    box-shadow:0 30px 80px -20px rgba(0,0,0,0.6), 0 0 0 1px var(--line);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  }
+  .video-embed{
+    width:100%; max-width:960px; aspect-ratio:16 / 9; border:0; border-radius:10px; background:#000;
+    box-shadow:0 16px 30px rgba(0,0,0,0.35);
+  }
+  .video-safe{
+    width:100%; max-width:960px; min-height:260px; border-radius:10px;
+    background:linear-gradient(135deg, rgba(18,23,44,0.96), rgba(36,43,82,0.95));
+    border:1px solid var(--line); display:flex; align-items:center; justify-content:center; text-align:center; padding:32px;
+    box-shadow:0 16px 30px rgba(0,0,0,0.35);
+  }
+  .video-caption{margin-top:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--text-muted); letter-spacing:0.04em;}
+
+  /* ================= STORY (cream card) ================= */
+  .story{background:var(--stone); color:var(--ink);}
+  .story .eyebrow{color:var(--terracota);}
+  .story .eyebrow::before{background:var(--terracota);}
+  .story-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:64px; margin-top:36px; align-items:start;}
+  @media (max-width:820px){.story-grid{grid-template-columns:1fr;}}
+  .story h2{font-size:clamp(1.8rem,3.4vw,2.6rem); color:var(--ink); margin-bottom:20px;}
+  .story p{margin:0 0 16px; font-size:1.02rem;}
+  .story blockquote{
+    font-family:'Fraunces',serif; font-style:italic; font-weight:500;
+    font-size:1.2rem; color:var(--terracota);
+    border-left:3px solid var(--terracota); padding-left:22px; margin:0;
+  }
+  .story-source{
+    margin-top:28px; font-family:'Space Mono',monospace; font-size:0.75rem;
+    color:#6b6350; letter-spacing:0.03em;
+  }
+
+  /* ================= PROBLEM -> SOLUTION ================= */
+  .bridge{display:flex; align-items:center; gap:18px; margin:56px 0 8px; color:var(--text-muted); font-family:'Space Mono',monospace; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em;}
+  .bridge::before,.bridge::after{content:""; height:1px; flex:1; background:var(--line);}
+
+  .features{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:22px; margin-top:44px;
+  }
+  @media (max-width:700px){.features{grid-template-columns:1fr;}}
+  .feature{
+    background:var(--night-panel); border:1px solid var(--line); border-radius:10px;
+    padding:28px 26px; position:relative;
+  }
+  .feature .icon{font-size:1.6rem; margin-bottom:14px; display:block;}
+  .feature h3{font-size:1.15rem; color:var(--gold-soft); margin-bottom:10px;}
+  .feature p{color:var(--text-muted); font-size:0.94rem; margin:0;}
+
+  /* ================= MOCKUPS ================= */
+  .mockups{display:flex; gap:34px; margin-top:52px; flex-wrap:wrap; justify-content:center;}
+  .phone{
+    width:236px; background:var(--ink); border-radius:30px; padding:12px;
+    box-shadow:0 25px 60px -15px rgba(0,0,0,0.55), 0 0 0 1px var(--line);
+  }
+  .phone-screen{
+    background:linear-gradient(180deg,#1d2444,#12172c);
+    border-radius:20px; padding:20px 16px; min-height:400px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .phone-screen h4{font-family:'Fraunces',serif; color:var(--gold-soft); font-size:1rem; text-align:center; margin-bottom:6px;}
+  .p-btn{
+    background:rgba(232,163,61,0.1); border:1px solid var(--line); color:var(--stone);
+    border-radius:8px; padding:12px 10px; font-size:0.82rem; font-family:'Work Sans';
+    display:flex; align-items:center; gap:8px;
+  }
+  .p-label{font-family:'Space Mono',monospace; font-size:0.66rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:8px;}
+  .p-field{background:rgba(255,255,255,0.04); border:1px solid var(--line); border-radius:6px; padding:8px 10px; font-size:0.78rem; color:var(--stone-dim);}
+  .p-radio{display:flex; align-items:center; gap:8px; font-size:0.78rem; color:var(--stone-dim); padding:4px 0;}
+  .p-dot{width:9px; height:9px; border-radius:50%; border:1.4px solid var(--gold);}
+  .p-dot.on{background:var(--gold);}
+  .p-track{display:flex; gap:10px; align-items:flex-start; font-size:0.76rem; color:var(--stone-dim); border-bottom:1px solid var(--line); padding-bottom:10px;}
+  .p-track b{color:var(--gold-soft); font-weight:600; display:block; margin-bottom:2px;}
+
+  /* ================= FLOW ================= */
+  .flow{margin-top:48px; display:grid; grid-template-columns:repeat(4,1fr); gap:0;}
+  @media (max-width:800px){.flow{grid-template-columns:1fr;}}
+  .flow-step{
+    padding:26px 20px; border-top:2px solid var(--gold);
+    position:relative;
+  }
+  .flow-step .num{font-family:'Space Mono',monospace; color:var(--gold); font-size:0.75rem;}
+  .flow-step h4{font-size:1.02rem; margin:10px 0 8px; color:var(--stone);}
+  .flow-step p{margin:0; font-size:0.9rem; color:var(--text-muted);}
+  .flow-step:not(:last-child)::after{
+    content:"→"; position:absolute; right:-12px; top:22px; color:var(--gold); font-size:1rem;
+  }
+  @media (max-width:800px){ .flow-step:not(:last-child)::after{content:"↓"; right:auto; left:20px; top:auto; bottom:-24px;} }
+
+  /* ================= HERO'S JOURNEY TIMELINE ================= */
+  .journey{background:var(--night-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .timeline{margin-top:48px; position:relative; padding-left:46px;}
+  .timeline::before{
+    content:""; position:absolute; left:13px; top:6px; bottom:6px; width:1px;
+    background:linear-gradient(var(--gold), transparent);
+  }
+  .t-item{position:relative; padding-bottom:34px;}
+  .t-item:last-child{padding-bottom:0;}
+  .t-flame{
+    position:absolute; left:-46px; top:2px; width:26px; height:26px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .t-flame svg{width:12px; height:17px;}
+  .t-item h4{font-size:1.05rem; color:var(--gold-soft); margin-bottom:4px;}
+  .t-item .stage-label{font-family:'Space Mono',monospace; font-size:0.68rem; color:var(--terracota); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;}
+  .t-item p{margin:0; color:var(--text-muted); font-size:0.94rem; max-width:600px;}
+
+  /* ================= STORYBOARD ================= */
+  .storyboard-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:44px;}
+  @media (max-width:820px){.storyboard-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.storyboard-grid{grid-template-columns:1fr;}}
+  .frame{
+    border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--night-panel);
+  }
+  .frame-num{
+    font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--gold);
+    padding:10px 14px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between;
+  }
+  .frame-body{padding:16px 14px 20px;}
+  .frame-body b{display:block; color:var(--stone); font-size:0.88rem; margin-bottom:6px; font-family:'Fraunces',serif; font-weight:600;}
+  .frame-body p{margin:0; font-size:0.86rem; color:var(--text-muted);}
+
+  /* ================= AI USE ================= */
+  .ai-compare{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px;}
+  @media (max-width:760px){.ai-compare{grid-template-columns:1fr;}}
+  .ai-card{background:var(--night-panel); border:1px solid var(--line); border-radius:10px; padding:26px;}
+  .ai-card.bad{border-color:rgba(179,83,47,0.4);}
+  .ai-card.good{border-color:rgba(62,142,126,0.45);}
+  .ai-tag{font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; display:inline-block;}
+  .ai-card.bad .ai-tag{color:var(--terracota);}
+  .ai-card.good .ai-tag{color:var(--turquoise);}
+  .prompt-box{
+    font-family:'Space Mono',monospace; font-size:0.78rem; color:var(--stone-dim);
+    background:rgba(0,0,0,0.25); border-radius:6px; padding:14px; margin-bottom:14px; line-height:1.55;
+  }
+  .ai-card p{margin:0; font-size:0.9rem; color:var(--text-muted);}
+  .tools-row{margin-top:26px; display:flex; gap:10px; flex-wrap:wrap;}
+  .tool-pill{
+    font-family:'Space Mono',monospace; font-size:0.72rem; color:var(--gold-soft);
+    border:1px solid var(--line); border-radius:20px; padding:6px 14px;
+  }
+
+  /* ================= REFLECTION ================= */
+  .reflection{background:var(--terracota); color:var(--stone);}
+  .reflection .eyebrow{color:rgba(237,227,207,0.8);}
+  .reflection .eyebrow::before{background:rgba(237,227,207,0.8);}
+  .reflection h2{font-size:clamp(1.6rem,3vw,2.2rem); margin-bottom:20px; max-width:760px;}
+  .reflection p{max-width:760px; font-size:1.05rem; color:rgba(237,227,207,0.92);}
+
+  /* ================= CONCLUSION / FOOTER ================= */
+  .conclusion h2{font-size:clamp(1.8rem,3.4vw,2.4rem); color:var(--stone); max-width:760px;}
+  .conclusion p{color:var(--text-muted); max-width:700px; font-size:1.02rem; margin-top:18px;}
+
+  footer{background:var(--night-panel); border-top:1px solid var(--line); padding:56px 0 40px;}
+  .credits{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; font-size:0.88rem;}
+  @media (max-width:700px){.credits{grid-template-columns:1fr; gap:24px;}}
+  .credits h5{font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); margin-bottom:10px;}
+  .credits p{margin:0; color:var(--text-muted);}
+  .foot-name{margin-top:40px; padding-top:24px; border-top:1px solid var(--line); font-family:'Fraunces',serif; color:var(--stone-dim); font-size:0.9rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<nav class="candle-nav" id="candleNav">
+  <button data-target="#video" title="Video" class="active">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#relato" title="Relato">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#solucion" title="Solución">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#mockups" title="Pantallas">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#viaje" title="Camino del héroe">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#storyboard" title="Storyboard">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#ia" title="Uso de IA">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <svg class="hero-mountain" viewBox="0 0 1200 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0c1022"/>
+        <stop offset="100%" stop-color="#1d2444"/>
+      </linearGradient>
+      <linearGradient id="mtn1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#232c56"/>
+        <stop offset="100%" stop-color="#141a34"/>
+      </linearGradient>
+      <linearGradient id="mtn2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#181f3d"/>
+        <stop offset="100%" stop-color="#0e1226"/>
+      </linearGradient>
+    </defs>
+    <rect x="0" y="0" width="1200" height="500" fill="url(#sky)"/>
+    <path d="M0,320 L180,180 L320,260 L480,120 L620,240 L760,150 L900,270 L1050,190 L1200,300 L1200,500 L0,500 Z" fill="url(#mtn1)"/>
+    <path d="M0,400 L150,300 L300,360 L470,240 L640,340 L820,260 L980,360 L1200,290 L1200,500 L0,500 Z" fill="url(#mtn2)"/>
+    <!-- casita en la cima -->
+    <rect x="465" y="98" width="18" height="14" fill="#3a3350"/>
+    <polygon points="462,98 486,98 474,86" fill="#4a4360"/>
+    <circle cx="474" cy="92" r="2.4" fill="#f4c874"/>
+    <!-- velas de familias subiendo -->
+    <g fill="#e8a33d">
+      <circle cx="210" cy="210" r="2.2"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/></circle>
+      <circle cx="270" cy="245" r="1.8"><animate attributeName="opacity" values="0.3;0.9;0.3" dur="3.1s" repeatCount="indefinite"/></circle>
+      <circle cx="520" cy="160" r="2"><animate attributeName="opacity" values="0.5;1;0.5" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="650" cy="270" r="2.2"><animate attributeName="opacity" values="0.4;0.95;0.4" dur="2.2s" repeatCount="indefinite"/></circle>
+      <circle cx="720" cy="200" r="1.9"><animate attributeName="opacity" values="0.35;1;0.35" dur="3.4s" repeatCount="indefinite"/></circle>
+      <circle cx="880" cy="290" r="2.1"><animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.6s" repeatCount="indefinite"/></circle>
+      <circle cx="1000" cy="220" r="2"><animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite"/></circle>
+    </g>
+  </svg>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">Mención · Desarrollo de Software</div>
+    <h1>Antaña Digital<br><em>la tradición que no se pierde.</em></h1>
+    <p class="hero-sub">Un proyecto que parte del relato ancestral del Cerro Antaña, en Pucarani, para proponer una aplicación que organiza la subida al cerro en el Año Nuevo Aymara y preserva en audio y video la voz de los mayores.</p>
+    <div class="hero-meta">
+      <div>Estudiante<span>Diana Canaza Mamani</span></div>
+      <div>Materia<span>Taller de Proyectos — Informática</span></div>
+      <div>Desafío<span>Desafío Audiovisual</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= VIDEO ================= -->
+<section id="video" class="video-section">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--gold-soft)">Video final</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">El relato, contado en imagen y voz</h2>
+
+    <div class="video-frame" style="margin-top:34px;">
+      <div class="video-safe">
+        <div>
+          <p style="margin:0 0 16px; color: var(--text-muted); font-size: 0.96rem; max-width: 520px;">El reproductor embebido de YouTube puede bloquearse por restricciones del navegador o del sitio. Para evitar el error 153, abre el video directamente.</p>
+          <a href="https://youtu.be/u5yPKDUuqPI" target="_blank" rel="noopener" style="display:inline-block; background: var(--gold); color: var(--night-deep); padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 0.82rem; box-shadow: 0 4px 14px rgba(232,163,61,0.3);">▶ Ver video sin error ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-caption">
+      <span>Duración aprox. 1 min · Reproducción segura sin bloqueos</span>
+      <span><a href="https://youtu.be/u5yPKDUuqPI" target="_blank" rel="noopener">youtu.be/u5yPKDUuqPI ↗</a></span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RELATO ================= -->
+<section id="relato" class="story">
+  <div class="wrap">
+    <div class="eyebrow">Relato elegido</div>
+    <div class="story-grid">
+      <div>
+        <h2>Ritos en el Año Nuevo Aymara en el Cerro Antaña</h2>
+        <p>Cada 24 de junio, las familias de las comunidades de Pucarani suben al Cerro Antaña para pedir a la Pachamama por su ganado, su familia y su producción. Deben llegar a las seis de la tarde, permanecer toda la noche y amanecer en el cerro.</p>
+        <p>Arriba hay una pequeña casita donde se guarda una imagen de la virgen; ahí se arrodillan y encienden una vela por cada integrante de la familia. Ese mismo día, los <em>yatiris</em> —sabios y lectores de suerte— atienden en el cerro para que la gente "saque suerte" en el año que comienza.</p>
+        <p>Este conocimiento se transmite de forma oral, de padres a hijos, tal como lo aprendió Rita Carvajal de su papá.</p>
+      </div>
+      <div>
+        <blockquote>"Arriba, en una pequeña casita, está la virgen a la que se le reza. Ese mismo día llegan también los yatiris, que ayudan a sacar suerte para el año que comienza."</blockquote>
+        <p class="story-source">Fuente: Recopilado por la Carrera de Literatura — <em>Mitos y Cuentos de Pucarani</em>, Pucarani, Aconcagua, agosto de 2006. Narrado por Rita Carvajal (17 años).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOLUCIÓN ================= -->
+<section id="solucion">
+  <div class="wrap">
+    <div class="eyebrow">De la montaña al software</div>
+    <h2 style="font-size:clamp(1.8rem,3.4vw,2.5rem); color:var(--stone); margin-top:16px; max-width:720px;">El conocimiento oral depende de estar ahí. Si la comunidad migra, se pierde.</h2>
+    <p style="color:var(--text-muted); max-width:640px; margin-top:16px; font-size:1.02rem;">En el relato, saber a qué hora ir, qué se hace en la casita y quiénes son los yatiris se aprende solo estando físicamente en el cerro. Con cada generación que se va a la ciudad, ese saber corre el riesgo de perderse — y además nadie organiza a las muchas familias que llegan el mismo día.</p>
+
+    <div class="bridge">Solución propuesta — App Antaña Digital</div>
+
+    <div class="features">
+      <div class="feature">
+        <span class="icon">📅</span>
+        <h3>Agendar visita</h3>
+        <p>Las familias eligen un horario de llegada el 24 de junio, para evitar aglomeraciones en la casita del cerro.</p>
+      </div>
+      <div class="feature">
+        <span class="icon">🎙️</span>
+        <h3>Biblioteca de relatos</h3>
+        <p>Audios y videos cortos donde los mayores, como Rita o su papá, cuentan el origen del ritual, para que cualquiera los escuche cuando quiera.</p>
+      </div>
+      <div class="feature">
+        <span class="icon">🕯️</span>
+        <h3>Registro de velas</h3>
+        <p>Cada familia registra cuántas velas prendió y por qué, quedando como una memoria digital del ritual año tras año.</p>
+      </div>
+      <div class="feature">
+        <span class="icon">🔮</span>
+        <h3>Directorio de yatiris</h3>
+        <p>Permite saber qué yatiris atienden ese día y en qué horario, sin tener que esperar horas en fila.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MOCKUPS ================= -->
+<section id="mockups" style="background:var(--night-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="eyebrow">Mockup de pantallas</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">Así se vería la app</h2>
+
+    <div class="mockups">
+      <div class="phone">
+        <div class="phone-screen">
+          <h4>🏔 Antaña Digital</h4>
+          <div class="p-btn">📅 Agendar mi visita</div>
+          <div class="p-btn">🎙 Escuchar relatos</div>
+          <div class="p-btn">🕯 Registrar mis velas</div>
+          <div class="p-btn">🔮 Ver yatiris del día</div>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <h4>Agendar visita — 24 de junio</h4>
+          <div class="p-label">Comunidad</div>
+          <div class="p-field">Pucarani ▾</div>
+          <div class="p-label">Nº de familiares</div>
+          <div class="p-field">5</div>
+          <div class="p-label">Horario</div>
+          <div class="p-radio"><span class="p-dot"></span> 18:00 – 20:00</div>
+          <div class="p-radio"><span class="p-dot on"></span> 20:00 – 22:00</div>
+          <div class="p-radio"><span class="p-dot"></span> 22:00 – 00:00</div>
+          <div class="p-btn" style="margin-top:auto; justify-content:center; background:var(--gold); color:var(--ink); border:none; font-weight:600;">Confirmar turno</div>
+        </div>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <h4>🎙 Relatos de la comunidad</h4>
+          <div class="p-track">▶<div><b>Rita C.</b>Los ritos del cerro Antaña — 3:12</div></div>
+          <div class="p-track">▶<div><b>Don Felipe</b>Cómo elegir al yatiri — 2:05</div></div>
+          <div class="p-track">▶<div><b>Doña Marta</b>Por qué se prenden velas — 1:48</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLUJO ================= -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Cómo funciona</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">Usuario → Entrada → Proceso → Resultado</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="num">Usuario</div>
+        <h4>Un comunario o comunaria</h4>
+        <p>Quiere organizar su subida al cerro o preservar el testimonio de un mayor.</p>
+      </div>
+      <div class="flow-step">
+        <div class="num">Entrada</div>
+        <h4>Ingresa datos</h4>
+        <p>Número de familiares y horario elegido, o graba el audio/video de un relato.</p>
+      </div>
+      <div class="flow-step">
+        <div class="num">Proceso</div>
+        <h4>El sistema procesa</h4>
+        <p>Evita choques de horario en la reserva y guarda el audio o video en la biblioteca digital.</p>
+      </div>
+      <div class="flow-step">
+        <div class="num">Resultado</div>
+        <h4>Turno y memoria</h4>
+        <p>La familia recibe un turno confirmado sin aglomeraciones, y el relato queda preservado para otros.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CAMINO DEL HÉROE ================= -->
+<section id="viaje" class="journey">
+  <div class="wrap">
+    <div class="eyebrow">Guion del video</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">El camino del héroe de Rita</h2>
+    <p style="color:var(--text-muted); max-width:600px; margin-top:12px;">Diez etapas, diez velas — así como en el ritual se enciende una por cada integrante de la familia.</p>
+
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">01 · Mundo ordinario</div>
+        <h4>La subida de cada año</h4>
+        <p>Rita, joven de la comunidad de Pucarani, sube cada 24 de junio al Cerro Antaña junto a su familia.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">02 · Llamado</div>
+        <h4>Cada vez menos jóvenes</h4>
+        <p>Su papá le cuenta que cada vez son menos los jóvenes que suben; muchos se han ido a la ciudad.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">03 · Duda</div>
+        <h4>El miedo a olvidar</h4>
+        <p>Rita teme que, si nadie más aprende el ritual, la tradición se pierda con el tiempo.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">04 · Mentor</div>
+        <h4>Una idea desde la tecnología</h4>
+        <p>Un desarrollador de la comunidad le muestra que se puede usar una aplicación para organizar y guardar esos conocimientos.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">05 · Cruce del umbral</div>
+        <h4>Rita decide actuar</h4>
+        <p>Decide grabar el relato de su papá y ayudar a diseñar la app "Antaña Digital".</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">06 · Pruebas</div>
+        <h4>Los primeros retos técnicos</h4>
+        <p>Deben pensar cómo evitar que todas las familias lleguen a la misma hora y cómo guardar los audios sin perder calidad.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">07 · Gran desafío</div>
+        <h4>Cientos de familias a la vez</h4>
+        <p>El 24 de junio llegan cientos de familias juntas: sin organización, se forma una fila enorme y se pierde tiempo para el ritual.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">08 · Recompensa</div>
+        <h4>Turnos y relatos guardados</h4>
+        <p>Con la app, cada familia tiene un horario asignado y los relatos de los mayores quedan guardados en la biblioteca digital.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">09 · Regreso</div>
+        <h4>La comunidad adopta la app</h4>
+        <p>Los jóvenes que viven en la ciudad pueden escuchar los relatos desde su celular.</p>
+      </div>
+      <div class="t-item">
+        <div class="t-flame"><svg viewBox="0 0 14 20"><path fill="#e8a33d" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/></svg></div>
+        <div class="stage-label">10 · Transformación</div>
+        <h4>La tecnología protege, no reemplaza</h4>
+        <p>La comunidad entiende que la tecnología puede proteger su memoria cultural sin reemplazar el ritual ni a los yatiris.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STORYBOARD ================= -->
+<section id="storyboard">
+  <div class="wrap">
+    <div class="eyebrow">Storyboard · 6 escenas</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">Del cerro a la pantalla</h2>
+
+    <div class="storyboard-grid">
+      <div class="frame">
+        <div class="frame-num">01 <span>Plano general</span></div>
+        <div class="frame-body"><b>La noche de las velas</b><p>El Cerro Antaña de noche, iluminado por decenas de velas; familias subiendo con velas en mano.</p></div>
+      </div>
+      <div class="frame">
+        <div class="frame-num">02 <span>Plano medio</span></div>
+        <div class="frame-body"><b>Junto al fogón</b><p>El papá de Rita le explica por qué cada 24 de junio suben al cerro.</p></div>
+      </div>
+      <div class="frame">
+        <div class="frame-num">03 <span>Primer plano</span></div>
+        <div class="frame-body"><b>La casita del cerro</b><p>La imagen de la virgen; manos encendiendo una velita.</p></div>
+      </div>
+      <div class="frame">
+        <div class="frame-num">04 <span>Plano general</span></div>
+        <div class="frame-body"><b>Diseñando la app</b><p>Escena actual: Rita y un desarrollador frente a una laptop, diseñando "Antaña Digital".</p></div>
+      </div>
+      <div class="frame">
+        <div class="frame-num">05 <span>Plano detalle</span></div>
+        <div class="frame-body"><b>La app en el celular</b><p>Pantalla mostrando el mockup: agenda de turnos y biblioteca de relatos.</p></div>
+      </div>
+      <div class="frame">
+        <div class="frame-num">06 <span>Plano medio</span></div>
+        <div class="frame-body"><b>De vuelta en el cerro</b><p>La comunidad usa la app organizada en armonía con la tradición.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= USO DE IA ================= -->
+<section id="ia" style="background:var(--night-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="eyebrow">Uso de Inteligencia Artificial</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">Cómo se integró la IA en el proyecto</h2>
+    <p style="color:var(--text-muted); max-width:680px; margin-top:12px;">El uso de herramientas de IA ayudó a estructurar la documentación técnica, guiar la narrativa del guion y validar el diseño visual bajo criterios profesionales.</p>
+
+    <div class="ai-compare">
+      <div class="ai-card bad">
+        <span class="ai-tag">✕ Prompt deficiente (Genérico)</span>
+        <div class="prompt-box">"Hazme una página web y un guion sobre un cerro y una app."</div>
+        <p>Resultado genérico que no captura la identidad cultural de Pucarani ni el sentido del Año Nuevo Aymara, perdiendo el enfoque de desarrollo de software con identidad local.</p>
+      </div>
+
+      <div class="ai-card good">
+        <span class="ai-tag">✓ Prompt estructurado (Efectivo)</span>
+        <div class="prompt-box">"Actúa como experto en diseño web y storytelling técnico. Redacta la estructura de un proyecto universitario sobre una app para organizar el ritual del Cerro Antaña (Pucarani), manteniendo un estilo visual nocturno, solemne y moderno (old money / clean / silent luxury)."</div>
+        <p>Resultado preciso, con una paleta de colores coherente, jerarquía tipográfica limpia, desglose del camino del héroe adaptado a velas y una solución técnica real al problema logístico.</p>
+      </div>
+    </div>
+
+    <div class="tools-row">
+      <span class="tool-pill">Herramientas usadas: Asistentes de lenguaje para estructura y maquetación</span>
+      <span class="tool-pill">Validación de accesibilidad y diseño responsivo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REFLEXIÓN ================= -->
+<section class="reflection">
+  <div class="wrap">
+    <div class="eyebrow">Reflexión personal</div>
+    <h2>La tecnología como guardiana de la memoria</h2>
+    <p>Desarrollar este proyecto me hizo comprender que la informática no solo sirve para automatizar procesos empresariales o sistemas de bases de datos. Cuando se aplica desde el respeto por nuestras raíces, el código y el diseño pueden convertirse en puentes para que las nuevas generaciones no olviden de dónde vienen. Antaña Digital demuestra que la modernidad y la tradición pueden caminar de la mano en el altiplano.</p>
+  </div>
+</section>
+
+<!-- ================= CONCLUSION / FOOTER ================= -->
+<section class="conclusion">
+  <div class="wrap">
+    <div class="eyebrow">Conclusión</div>
+    <h2 style="margin-top:16px;">Un proyecto vivo para Pucarani</h2>
+    <p>Antaña Digital integra la ingeniería de software con la antropología cultural de nuestras comunidades, ofreciendo una respuesta concreta al reto de la migración juvenil y la preservación oral.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="credits">
+      <div>
+        <h5>Carrera</h5>
+        <p>Ingeniería en Informática<br>Universidad Mayor de San Andrés (UMSA)</p>
+      </div>
+      <div>
+        <h5>Materia</h5>
+        <p>Taller de Proyectos<br>Mención Desarrollo de Software</p>
+      </div>
+      <div>
+        <h5>Año</h5>
+        <p>Gestión Académica 2026<br>La Paz, Bolivia</p>
+      </div>
+    </div>
+    <div class="foot-name">
+      <span>Diana Canaza Mamani — Antaña Digital</span>
+      <span>Todos los derechos reservados</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Script para manejar la navegación lateral de velas y la sección activa
+  const navButtons = document.querySelectorAll('.candle-nav button');
+  const sections = document.querySelectorAll('section, header');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      const sectionTop = sec.offsetTop;
+      if (pageYOffset >= sectionTop - 200) {
+        current = '#' + sec.getAttribute('id');
+      }
+    });
+
+    navButtons.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-target') === current) {
+        btn.classList.add('active');
+      }
+    });
+  });
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.querySelector(btn.getAttribute('data-target'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
