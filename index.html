@@ -277,12 +277,19 @@
     font-family:'Space Mono',monospace; font-size:0.78rem; color:var(--stone-dim);
     background:rgba(0,0,0,0.25); border-radius:6px; padding:14px; margin-bottom:14px; line-height:1.55;
   }
-  .ai-card p{margin:0; font-size:0.9rem; color:var(--text-muted);}
+  .ai-card p{margin:0 0 10px; font-size:0.9rem; color:var(--text-muted);}
+  .ai-card p:last-child{margin-bottom:0;}
   .tools-row{margin-top:26px; display:flex; gap:10px; flex-wrap:wrap;}
   .tool-pill{
     font-family:'Space Mono',monospace; font-size:0.72rem; color:var(--gold-soft);
     border:1px solid var(--line); border-radius:20px; padding:6px 14px;
   }
+
+  /* ================= GUION BREVE ================= */
+  .script-block{margin-top:32px; font-family:'Space Mono',monospace; font-size:0.92rem; line-height:1.9; max-width:760px;}
+  .script-block p{margin:0 0 22px;}
+
+  /* ================= PRESENTACIÓN ================= */
 
   /* ================= REFLECTION ================= */
   .reflection{background:var(--terracota); color:var(--stone);}
@@ -296,8 +303,9 @@
   .conclusion p{color:var(--text-muted); max-width:700px; font-size:1.02rem; margin-top:18px;}
 
   footer{background:var(--night-panel); border-top:1px solid var(--line); padding:56px 0 40px;}
-  .credits{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; font-size:0.88rem;}
-  @media (max-width:700px){.credits{grid-template-columns:1fr; gap:24px;}}
+  .credits{display:grid; grid-template-columns:repeat(4,1fr); gap:28px; font-size:0.88rem;}
+  @media (max-width:900px){.credits{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.credits{grid-template-columns:1fr; gap:24px;}}
   .credits h5{font-family:'Space Mono',monospace; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--gold); margin-bottom:10px;}
   .credits p{margin:0; color:var(--text-muted);}
   .foot-name{margin-top:40px; padding-top:24px; border-top:1px solid var(--line); font-family:'Fraunces',serif; color:var(--stone-dim); font-size:0.9rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
@@ -323,10 +331,16 @@
   <button data-target="#viaje" title="Camino del héroe">
     <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
   </button>
+  <button data-target="#guion" title="Guion">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
   <button data-target="#storyboard" title="Storyboard">
     <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
   </button>
   <button data-target="#ia" title="Uso de IA">
+    <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
+  </button>
+  <button data-target="#presentacion" title="Presentación">
     <svg viewBox="0 0 14 20"><path class="flame" d="M7 0c1.5 3 3 5 3 8a3 3 0 1 1-6 0c0-3 1.5-5 3-8z"/><rect x="5.3" y="8" width="3.4" height="12" fill="#8a7550"/></svg>
   </button>
 </nav>
@@ -383,7 +397,7 @@
   <div class="wrap">
     <div class="eyebrow" style="color:var(--gold-soft)">Video final</div>
     <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">El relato, contado en imagen y voz</h2>
-
+    
     <div class="video-frame" style="margin-top:34px;">
       <div class="video-safe">
         <div>
@@ -528,7 +542,7 @@
 <!-- ================= CAMINO DEL HÉROE ================= -->
 <section id="viaje" class="journey">
   <div class="wrap">
-    <div class="eyebrow">Guion del video</div>
+    <div class="eyebrow">Camino del héroe</div>
     <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">El camino del héroe de Rita</h2>
     <p style="color:var(--text-muted); max-width:600px; margin-top:12px;">Diez etapas, diez velas — así como en el ritual se enciende una por cada integrante de la familia.</p>
 
@@ -597,6 +611,37 @@
   </div>
 </section>
 
+<!-- ================= GUION BREVE ================= -->
+<section id="guion" class="story">
+  <div class="wrap">
+    <div class="eyebrow">Guion breve</div>
+    <h2 style="margin-top:16px;">"Antaña Digital" — guion</h2>
+
+    <div class="script-block">
+      <p><b>ESC. 1 — EXT. CERRO ANTAÑA — NOCHE</b><br>
+      Decenas de familias suben con velas encendidas en la mano. Sopla el viento del altiplano.</p>
+
+      <p><b>ESC. 2 — INT. CASA DE RITA — NOCHE (recuerdo)</b><br>
+      PAPÁ: "Antes éramos muchos los que subíamos... cada año veo menos jóvenes."<br>
+      RITA: (preocupada) "¿Y si ya nadie se acuerda cómo se hace?"</p>
+
+      <p><b>ESC. 3 — EXT. CASITA DEL CERRO — NOCHE</b><br>
+      Rita observa a los yatiris atender a las familias. Enciende una vela por cada integrante de su familia.</p>
+
+      <p><b>ESC. 4 — INT. ESPACIO DE TRABAJO — DÍA (presente)</b><br>
+      Rita y un desarrollador diseñan en una laptop la app "Antaña Digital".<br>
+      DESARROLLADOR: "Podemos guardar los relatos y organizar los turnos, para que nadie se quede esperando."</p>
+
+      <p><b>ESC. 5 — INSERT — PANTALLA DE CELULAR</b><br>
+      Se muestra el mockup de la app: agenda de turnos y biblioteca de relatos.</p>
+
+      <p><b>ESC. 6 — EXT. CERRO ANTAÑA — NOCHE (presente)</b><br>
+      La comunidad sube organizada. Los jóvenes de la ciudad escuchan el relato de Rita desde su celular.<br>
+      NARRADORA (V.O.): "La tecnología no reemplaza el ritual. Lo acompaña, para que nunca se apague."</p>
+    </div>
+  </div>
+</section>
+
 <!-- ================= STORYBOARD ================= -->
 <section id="storyboard">
   <div class="wrap">
@@ -642,20 +687,53 @@
     <div class="ai-compare">
       <div class="ai-card bad">
         <span class="ai-tag">✕ Prompt deficiente (Genérico)</span>
-        <div class="prompt-box">"Hazme una página web y un guion sobre un cerro y una app."</div>
-        <p>Resultado genérico que no captura la identidad cultural de Pucarani ni el sentido del Año Nuevo Aymara, perdiendo el enfoque de desarrollo de software con identidad local.</p>
+        <div class="prompt-box">"Adapta el Camino del Héroe a mi relato del Cerro Antaña."</div>
+        <p><b>Resultado inicial obtenido:</b> un Camino del Héroe genérico de 12 etapas copiadas casi literal del modelo clásico de Campbell, sin relación real con Rita, con las velas, ni con la migración de los jóvenes a la ciudad.</p>
+        <p><b>Limitación identificada:</b> no conectaba las etapas con el conflicto real del relato (la pérdida del conocimiento oral) ni con la solución tecnológica que se quería proponer.</p>
       </div>
 
       <div class="ai-card good">
         <span class="ai-tag">✓ Prompt estructurado (Efectivo)</span>
-        <div class="prompt-box">"Actúa como experto en diseño web y storytelling técnico. Redacta la estructura de un proyecto universitario sobre una app para organizar el ritual del Cerro Antaña (Pucarani), manteniendo un estilo visual nocturno, solemne y moderno (old money / clean / silent luxury)."</div>
-        <p>Resultado preciso, con una paleta de colores coherente, jerarquía tipográfica limpia, desglose del camino del héroe adaptado a velas y una solución técnica real al problema logístico.</p>
+        <div class="prompt-box">"Adapta el Camino del Héroe en exactamente 10 etapas al relato de Rita y el ritual del Cerro Antaña (Pucarani). Cada etapa debe usar como metáfora una vela encendida, y las etapas 4 en adelante deben mostrar cómo Rita, guiada por un desarrollador, transforma su miedo a que se pierda la tradición en una solución de software (agenda de turnos, biblioteca de relatos, registro de velas, directorio de yatiris)."</div>
+        <p><b>Corrección aplicada:</b> se fijó el número exacto de etapas (10, una por vela), se pidió que la metáfora de la vela atravesara todo el camino, y se conectó explícitamente el conflicto del relato con la propuesta tecnológica desde la etapa del "mentor".</p>
+        <p><b>Resultado mejorado obtenido:</b> las 10 etapas que hoy aparecen en la sección "Camino del héroe" de esta página, cada una con su vela como símbolo, y con una transición clara entre el mundo tradicional (etapas 1-3) y la solución digital (etapas 4-10).</p>
       </div>
     </div>
 
     <div class="tools-row">
       <span class="tool-pill">Herramientas usadas: Asistentes de lenguaje para estructura y maquetación</span>
       <span class="tool-pill">Validación de accesibilidad y diseño responsivo</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRESENTACIÓN ================= -->
+<section id="presentacion" style="background:var(--night-mid); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--gold-soft)">Presentación del proyecto</div>
+    <h2 style="color:var(--stone); font-size:clamp(1.7rem,3vw,2.3rem); margin-top:16px;">Antaña Digital, en una mirada</h2>
+
+    <div class="features" style="margin-top:44px;">
+      <div class="feature">
+        <span class="icon">🏔️</span>
+        <h3>Problema</h3>
+        <p>El conocimiento oral del ritual del Cerro Antaña depende de estar físicamente ahí. Con la migración a la ciudad, se pierde.</p>
+      </div>
+      <div class="feature">
+        <span class="icon">💡</span>
+        <h3>Solución</h3>
+        <p>Una app que agenda turnos de subida, guarda audios/videos de los mayores y muestra el directorio de yatiris del día.</p>
+      </div>
+      <div class="feature">
+        <span class="icon">🎯</span>
+        <h3>Público objetivo</h3>
+        <p>Familias de las comunidades de Pucarani y jóvenes que migraron a la ciudad y quieren mantener el vínculo con la tradición.</p>
+      </div>
+      <div class="feature">
+        <span class="icon">🚀</span>
+        <h3>Impacto esperado</h3>
+        <p>Menos aglomeración en el cerro, memoria oral preservada digitalmente, y transmisión intergeneracional del ritual.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -680,18 +758,23 @@
 
 <footer>
   <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:18px;">Créditos del Proyecto</div>
     <div class="credits">
       <div>
-        <h5>Carrera</h5>
-        <p>Ingeniería en Informática<br>Universidad Mayor de San Andrés (UMSA)</p>
+        <h5>Relato original</h5>
+        <p>Recopilado por la Carrera de Literatura</p>
       </div>
       <div>
-        <h5>Materia</h5>
-        <p>Taller de Proyectos<br>Mención Desarrollo de Software</p>
+        <h5>Estudiante</h5>
+        <p>Diana Canaza Mamani</p>
       </div>
       <div>
-        <h5>Año</h5>
-        <p>Gestión Académica 2026<br>La Paz, Bolivia</p>
+        <h5>Mención</h5>
+        <p>Desarrollo de Software</p>
+      </div>
+      <div>
+        <h5>Herramientas</h5>
+        <p>CapCut, Visual Studio Code, GitHub Pages, IAs, Canva</p>
       </div>
     </div>
     <div class="foot-name">
